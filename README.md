@@ -1,13 +1,14 @@
-# Pipeline to implement 
-Training of forward (Goldin_orig_CNN_highres_NCCC)
+# Actor-retina
 
-Training of actor model (goldin_actor_network)
+Code used for data analysis in the article "An actor-model framework for visual sensory encoding"
 
-Generate 5-res results (analysis_paired_test_5res)
+# Description
 
-Generate in silico results (goldin_analyse_paired_test)
+The source code for the article "An actor-model framework for visual sensory encoding" by Leong et. al. is provided. To train the forward model, run `train_fwd.py`. To train the actor network, run `train_actor.py`. The optimized model is provided to generate the figures found in the article. To understand the data analysis pipeline and generate the figures presented in the article, look at `gen_fig_X.py`.
 
-Generate ex-vivo results (analysis_paired_test_validation)
+# Software-requirements
+The pipeline is written fully in python. The requirements file for the libraries used is provided. To install the necessary libraries, run `pip install -r requirements.txt`
 
-Generate contrast (validation_contrast_measure)
+# Hardware-requirements
+Our costume-scripts have been executed on an NVIDIA RTX 3090 GPU. Be advised that execution of the code without GPU-backed machines (CPU only) can considerably increases the training time.
 
