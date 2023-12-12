@@ -8,7 +8,6 @@ import numpy as np
 import os
 import pandas as pd
 import random
-import sys
 import tensorflow as tf
 
 from SpatialXFeatureJointL1Readout import SpatialXFeatureJointL1Readout
@@ -16,8 +15,7 @@ from StackedConv2DCore import StackedConv2DCore
 from lstmconv2d import ConvLSTM2d
 
 from learning_rate_on_plateau import CustomReduceLearningRateOnPlateauCallback
-from utils import corrcoef,deepupdate
-# from goldin_checkpoint import CustomModelCheckpointCallback
+from utils import deepupdate
 
 import custom_metrics
 import utils
@@ -36,21 +34,21 @@ class neuronal_CC_Callback(tf.keras.callbacks.Callback):
 		self.val_track = running_track['val_neu_cc']
 		self.train_rmse_track = running_track['train_rmse']
 		self.val_rmse_track = running_track['val_rmse']
-	  # def on_train_begin(self, logs={}):
 
 	  #only do it once instead of every epoch to save time. After finding best model can use on_epoch_end to get curve
-	# def on_epoch_end(self, epoch, logs={}):
-	#     train_cc,train_rmse = utils.plot_neuron_response(self.model,self.X_train,self.y_train)
-	#     val_cc,val_rmse = utils.plot_neuron_response(self.model,self.X_val,self.y_val)
-	#     plt.close('all')
+	def on_epoch_end(self, epoch, logs={}):
+	    train_cc,train_rmse = utils.plot_neuron_response(self.model,self.X_train,self.y_train)
+	    val_cc,val_rmse = utils.plot_neuron_response(self.model,self.X_val,self.y_val)
+	    plt.close('all')
 
-	#     self.train_track.append(train_cc)
-	#     self.val_track.append(val_cc)
-	#     self.train_rmse_track.append(train_rmse)
-	#     self.val_rmse_track.append(val_rmse)
+	    self.train_track.append(train_cc)
+	    self.val_track.append(val_cc)
+	    self.train_rmse_track.append(train_rmse)
+	    self.val_rmse_track.append(val_rmse)
 
-	#     print('neuronal_CC: ',val_cc)
-	#     print('val_rmse: ',val_rmse)
+	    print('neuronal_CC: ',val_cc)
+	    print('val_rmse: ',val_rmse)
+	
 	def on_train_end(self, epoch, logs={}):
 		train_cc,train_rmse = utils.plot_neuron_response(self.model,self.X_train,self.y_train)
 		val_cc,val_rmse = utils.plot_neuron_response(self.model,self.X_val,self.y_val)

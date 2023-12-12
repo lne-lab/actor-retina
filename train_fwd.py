@@ -29,11 +29,11 @@ else:
     is_gpu_available = False
 
 #directory to save model
-experiment_directory = r'F:\Dataset_public\test_pub\forward_training'
+experiment_directory = r'F:\Retina_project\Dataset_public\test_pub\forward_training'
 
 wn_files,files_highres ,sta_files,flash_file = config.get_file_numbers_actor_highres()
-stim_path = r'F:\Dataset_public\stimulus\high_res_stim'
-spikes_root = r'F:\Dataset_public\spikes_data\high_res_spikes.npy'
+stim_path = r'F:\Retina_project\Dataset_public\stimulus\high_res_stim'
+spikes_root = r'F:\Retina_project\Dataset_public\spikes_data\high_res_spikes.npy'
 
 
 spikes_data = np.load(spikes_root) #nfiles, nNeurons, bins
@@ -41,7 +41,8 @@ print(spikes_data.shape)
 wn_resp, nat_resp = utils.sum_response(spikes_data, 40, (wn_files,files_highres),num_unique_image=200)
 wn_stim,nat_stim = utils.get_stim(stim_path,(wn_files,files_highres),num_unique_image=200,num_images=24000)
 neuron_pass = utils.stability_check(wn_resp,wn_files,stability_thresh=0.3,num_unique_image=200)
-
+print(len(neuron_pass))
+exit()
 # nat_resp = utils.avg_response_repeats(nat_resp,files_highres,num_unique_image=200)
 nat_stim = utils.avg_nat_stim(nat_stim,files_highres,num_unique_image=200)
 

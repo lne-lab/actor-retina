@@ -1,7 +1,13 @@
-# actor-retina
+# Pipeline to implement 
+Training of forward (Goldin_orig_CNN_highres_NCCC)
 
-Code used for data analysis in the article "An actor-model framework for visual sensory encoding"
+Training of actor model (goldin_actor_network)
 
-# description
+Generate 5-res results (analysis_paired_test_5res)
 
-To train the network, run train_fwd.py and train_actor.py. To understand the data analysis pipeline and generate the figures presented in the article, look at gen_fig_X.py
+Generate in silico results (goldin_analyse_paired_test)
+
+Generate ex-vivo results (analysis_paired_test_validation)
+
+Generate contrast (validation_contrast_measure)
+

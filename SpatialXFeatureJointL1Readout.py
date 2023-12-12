@@ -151,9 +151,14 @@ class SpatialXFeatureJointL1Readout(tf.keras.layers.Layer):
             [1, 2],
             [1, 2],
         ]
+        # print('input shape',inputs.shape)
+        # print('mask shape', self.masks.shape)
         masked = tf.tensordot(inputs, self.masks, axes)  # i.e. tensor contraction
+        # print('mask shape',masked.shape)
+        # print('feature shape', self.feature_weights.shape)
         # Implement "feature weights".
         h = tf.math.reduce_sum(masked * tf.transpose(self.feature_weights), axis=1)
+        # print('h shape',h.shape)
         # Output non-linearity.
         x = tf.identity(tf.math.softplus(h + self.biases), name='output')  # TODO enable!
         outputs = x

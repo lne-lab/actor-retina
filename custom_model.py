@@ -1,6 +1,8 @@
 from tensorflow.keras import layers, models
 from tensorflow.keras.regularizers import l1, l2
 import tensorflow as tf
+from tensorflow.keras.layers import Input
+import numpy as np
 
 
 
@@ -87,3 +89,45 @@ def avg_downsample_network(forward_mdl, inputs,red_dim = 64):
 	x = forward_mdl(x, training=False)
 
 	return models.Model(inputs, x, name = "transformation_network")
+
+def general_downsample_network(forward_mdl, inputs,red_dim = 64,dim_method='bilinear'):
+
+	x = tf.image.resize(images=inputs, size = [red_dim,red_dim],method=dim_method)
+	x = layers.UpSampling2D(size=(2, 2))(x)
+	if red_dim == 32:
+		x = layers.UpSampling2D(size=(2, 2))(x)
+
+	x = tf.clip_by_value(x, clip_value_min=0, clip_value_max=1)
+	forward_mdl.trainable = False
+	x = forward_mdl(x, training=False)
+
+	return models.Model(inputs, x, name = "transformation_network")
+
+
+
+
+
+
+def avg_downsample_network_with_contrast(forward_mdl, inputs,red_dim = 64,alpha = 1):
+
+	x = inputs
+	x = layers.AveragePooling2D(pool_size=(2, 2),strides=None, padding = 'valid')(x)
+
+	if red_dim == 32:
+		x = layers.AveragePooling2D(pool_size=(2, 2),strides=None, padding = 'valid')(x)
+
+		if alpha is not None:		
+			x = tf.image.adjust_contrast(x, alpha)
+		
+
+		
+		x = layers.UpSampling2D(size=(2, 2))(x)
+	x = layers.UpSampling2D(size=(2, 2))(x)
+
+	x = tf.clip_by_value(x, clip_value_min=0, clip_value_max=1) # shape = [batch, height, width, channels]
+		
+	forward_mdl.trainable = False
+	x = forward_mdl(x, training=False)
+
+	return models.Model(inputs, x, name = "transformation_network")
+

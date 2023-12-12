@@ -28,8 +28,8 @@ __time__ = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '0'  # i.e. keep all message
 
 
-experiment_directory = r'F:\Dataset_public\models\forward_model'
-dataset_folder = r'F:\Dataset_public\models\forward_model'
+experiment_directory = r'F:\Retina_project\Dataset_public\models\forward_model'
+dataset_folder = r'F:\Retina_project\Dataset_public\models\forward_model'
 
 gpus = tf.config.list_physical_devices(device_type='GPU')
 if gpus:
@@ -39,8 +39,8 @@ else:
 
 wn_files,files_highres ,sta_files,flash_file = config.get_file_numbers_actor_highres()
 # stim_path, spikes_root, result_save_root, data_save_root = utils.get_file_path('alien','none','actor_high_resolution_400ms_stim')
-stim_path = r'F:\Dataset_public\stimulus\high_res_stim'
-spikes_root = r'F:\Dataset_public\spikes_data\high_res_spikes.npy'
+stim_path = r'F:\Retina_project\Dataset_public\stimulus\high_res_stim'
+spikes_root = r'F:\Retina_project\Dataset_public\spikes_data\high_res_spikes.npy'
 
 train_x,val_x,test_x,train_y,val_y,test_y = utils.load_train_val_test(dataset_folder)
 train_y = utils.merge_test_y(train_y)
@@ -83,7 +83,6 @@ model_handler = model.create_handler(
     test_data=(test_x, test_y),
 )
 
-# run_name = "run_{:03d}".format(211) #best model
 run_name = "best_run"
 model_handler.load(run_name=run_name)
 
@@ -127,7 +126,20 @@ class neuronal_CC_Callback(tf.keras.callbacks.Callback):
         self.val_track = running_track['val_neu_cc']
         self.train_rmse_track = running_track['train_rmse']
         self.val_rmse_track = running_track['val_rmse']
-    
+
+    def on_epoch_end(self, epoch, logs={}):
+        train_cc,train_rmse = utils.plot_neuron_response(self.model,self.X_train,self.y_train)
+        val_cc,val_rmse = utils.plot_neuron_response(self.model,self.X_val,self.y_val)
+        plt.close('all')
+
+        self.train_track.append(train_cc)
+        self.val_track.append(val_cc)
+        self.train_rmse_track.append(train_rmse)
+        self.val_rmse_track.append(val_rmse)
+
+        print('neuronal_CC: ',val_cc)
+        print('val_rmse: ',val_rmse)
+
     def on_train_end(self, epoch, logs={}):
         train_cc,train_rmse = utils.plot_neuron_response(self.model,self.X_train,self.y_train)
         val_cc,val_rmse = utils.plot_neuron_response(self.model,self.X_val,self.y_val)
@@ -214,6 +226,8 @@ for params in combination:
     # train_avg_cc,test_avg_cc,train_avg_rmse,test_avg_rmse = utils.plot_CCs(modular_network, data,running_track_lst,save_dir,None)
     train_avg_cc,val_avg_cc,test_avg_cc,train_avg_rmse,val_avg_rmse,test_avg_rmse,test_nc_cc = utils.plot_CCs(modular_network, data,running_track_lst,save_dir,None)
 
+    utils.plot_metrics(history,results,save_dir)
+
     for metric,value in results.items():
         tracking_dict[metric].append(value)
 
@@ -231,7 +245,7 @@ for params in combination:
     df.to_csv(os.path.join(save_dir,'track.csv'))
 
     print(results)
-    print(running_track)
+    # print(running_track)
     run_num+=1
 
     modular_network.save_weights(os.path.join(save_dir,'my_model_checkpoint'),save_format='tf')
