@@ -111,7 +111,7 @@ model_args['l2_reg'] = 1e-3
 model_args['n_out'] = 32
 
 experiment_directory = r'F:\Retina_project\Dataset_public\models\actor_model'
-final_fig_root = Path(r'F:\Retina_project\Dataset_public\figures\general_downsample_v2')
+final_fig_root = Path(r'F:\Retina_project\Dataset_public\figures\figure_6b_7a_7c')
 
 
 n_out=32
@@ -159,7 +159,7 @@ def get_contrast_list(model,n_image,tf_type,load_img,layer_track):
 
 n_image_viz=val_test_x.shape[0]
 print(n_image_viz)
-# n_image_viz=3
+# n_image_viz=3 #for testing
 
 actor_contrast_lst = get_contrast_list(actor_network,n_image_viz,'actor',val_test_x,layer_track)
 
@@ -180,7 +180,7 @@ for dim_method in downsampling_methods:
 	elif dim_method == 'average':
 		avg_network = custom_model.avg_downsample_network(fwd_model,forward_inp,red_dim = model_args['n_out'])
 	elif dim_method == 'average_with_contrast':
-		avg_network = custom_model.avg_downsample_network_with_contrast(fwd_model,forward_inp,red_dim = model_args['n_out'],alpha=1.5,sigma=None,kappa = None)
+		avg_network = custom_model.avg_downsample_network_with_contrast(fwd_model,forward_inp,red_dim = model_args['n_out'],alpha=1.5)
 	else:
 		avg_network = custom_model.general_downsample_network(fwd_model,forward_inp,red_dim = model_args['n_out'],dim_method=dim_method)
 
@@ -217,7 +217,7 @@ fig = plt.figure(figsize=(WIDTH_SIZE,HEIGHT_SIZE))
 print(all_contrast_diff_to_act_df.columns)
 sns.boxplot(all_contrast_diff_to_act_df[['average','average_with_contrast']])
 plt.ylabel('Difference in local contrast between actor and downsampled images')
-plt.ylim([-0.2,0.2])
+plt.ylim([-0.01,0.02])
 plt.tight_layout()
 plt.savefig(final_fig_root/'methods_transformation'/f'averages_contrast_diff_to_act.svg')
 

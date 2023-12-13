@@ -101,8 +101,8 @@ actor_network.load_weights(os.path.join(load_dir,'my_model_checkpoint')).expect_
 
 
 
-# alpha_range = np.arange(0,5,0.1)
-alpha_range = np.arange(1.3,1.8,0.1) #for testing
+alpha_range = np.arange(0,5,0.1)
+# alpha_range = np.arange(1.3,1.8,0.1) #for testing
 
 perc_lst = np.empty((len(alpha_range)))
 diff_lst_to_act = np.empty((len(alpha_range)))

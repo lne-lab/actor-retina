@@ -41,10 +41,13 @@ all_orig = np.array(all_orig)
 all_act_32 = np.array(all_act_32)
 all_avg_32 = np.array(all_avg_32)
 
+# cc,p1 = wilcoxon(all_orig,all_act_32)
+# cc,p3 = wilcoxon(all_orig,all_avg_32)
+# cc,p5 = wilcoxon(all_act_32,all_avg_32)
 
-cc,p1 = wilcoxon(all_orig,all_act_32,)
-cc,p3 = wilcoxon(all_orig,all_avg_32,)
-cc,p5 = wilcoxon(all_act_32,all_avg_32,)
+cc,p1 = wilcoxon(all_orig,all_act_32, alternative='greater')
+cc,p3 = wilcoxon(all_orig,all_avg_32, alternative='greater')
+cc,p5 = wilcoxon(all_act_32,all_avg_32, alternative='greater')
 
 
 diff_results = pd.DataFrame()
@@ -64,9 +67,9 @@ sns.boxplot(diff_results[['OG - all_act_32','OG - all_avg_32','all_act_32 - all_
 	flierprops={"marker": "$\circ$"})
 plt.axhline(y=0.0, linestyle='--')
 plt.ylim([-0.1,0.25])
-plt.savefig(os.path.join(final_fig_dir,'validation_box_dist_plot','validation_boxplot_32_%s_%s_%s.jpeg'%(p1,p3,p5)))
+plt.savefig(os.path.join(final_fig_dir,'validation_box_dist_plot','validation_boxplot_32_%s_%s_%s.svg'%(p1,p3,p5)))
 
-ext='jpeg'
+ext='svg'
 WIDTH_SIZE=5
 HEIGHT_SIZE=9
 fig = plt.figure(figsize=(WIDTH_SIZE,HEIGHT_SIZE))

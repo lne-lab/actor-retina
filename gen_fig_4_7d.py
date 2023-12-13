@@ -94,7 +94,7 @@ model_args['l2_reg'] = 1e-3
 model_args['n_out'] = 32
 
 experiment_directory = r'F:\Retina_project\Dataset_public\models\actor_model'
-final_fig_root = Path(r'F:\Retina_project\Dataset_public\figures\general_downsample_v2')
+final_fig_root = Path(r'F:\Retina_project\Dataset_public\figures\figure_4_7d')
 
 
 n_out=32
