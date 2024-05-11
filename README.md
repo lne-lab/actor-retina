@@ -10,5 +10,5 @@ The source code for the article "An actor-model framework for visual sensory enc
 The pipeline is written fully in python. The requirements file for the libraries used is provided. To install the necessary libraries, run `pip install -r requirements.txt`
 
 # Hardware-requirements
-Our costume-scripts have been executed on an NVIDIA RTX 3090 GPU. Be advised that execution of the code without GPU-backed machines (CPU only) can considerably increases the training time.
+Our customed-scripts have been executed on an NVIDIA RTX 3090 GPU. Be advised that execution of the code without GPU-backed machines (CPU only) can considerably increases the training time.
 
